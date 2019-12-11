@@ -1,4 +1,4 @@
-# Improved Quantile Regression Neural Network
+# Quantile Regression Neural Network
 
 This package is based on the paper, [An **improved quantile regression neural network** for probabilistic load forecasting](https://ieeexplore.ieee.org/abstract/document/8419220/), [W Zhang](https://scholar.google.com/citations?user=aanT6TIAAAAJ&hl=en&oi=sra).
 
