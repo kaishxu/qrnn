@@ -5,7 +5,7 @@ This package is based on the paper, [An **improved quantile regression neural ne
 ## Usage
 
 ```python
-from iqrnn import get_model
+from qrnn import get_model
 import numpy as np
 
 # Generate the synthetic data
