@@ -27,22 +27,3 @@ def get_model(input_dim, num_units, act, dp=0.1, gauss_std=0.3, num_hidden_layer
 
     model = Model(input, x)
     return model
-
-class Qloss(keras.metrics.Metric):
-    def __init__(self, n_q=99, name='qloss_score', **kwargs):
-        super().__init__(name=name, **kwargs)
-        self.qs = self.add_weight('qs', initializer='zeros')
-        self.count = self.add_weight('count', initializer='zeros')
-        self.n_q = n_q
-        
-    def update_state(self, y_true, y_pred, sample_weight=None):
-        q = np.array(range(1, self.n_q + 1))
-        left = (q / (self.n_q + 1) - 1) * (y_true - y_pred)
-        right = q / (self.n_q + 1) * (y_true - y_pred)
-        tmp = tf.reduce_mean(K.maximum(left, right))
-        self.qs.assign_add(tmp)
-        self.count.assign_add(1)
-        
-    def result(self):
-        qs = self.qs / self.count
-        return qs

@@ -5,7 +5,7 @@ This package is based on the paper, [An **improved quantile regression neural ne
 ## Usage
 
 ```python
-from qrnn import get_model, Qloss, qloss
+from qrnn import get_model, qloss
 from keras.callbacks import *
 import numpy as np
 
@@ -16,7 +16,7 @@ x3 = x1**2
 x4 = (x1+x2)/2
 
 Xtrain = np.vstack((x2, x3, x4)).T #(900, 3)
-Ytrain = np.array([x1]*99).T #(900, 1)
+Ytrain = np.array([x1]*1).T #(900, 1)
 
 # Parameters
 input_dim = 3
@@ -32,10 +32,9 @@ model = get_model(input_dim, num_units, act, dropout, gauss_std, num_hidden_laye
 print(model.summary())
 
 # Train
-early_stopping = EarlyStopping(monitor='val_qloss_score', patience=5)
+early_stopping = EarlyStopping(monitor='val_loss', patience=5)
 model.compile(loss=lambda y_t, y_p: qloss(y_true=y_t, y_pred=y_p, n_q=num_quantiles), 
-              optimizer='adam', 
-              metrics=[Qloss(num_quantiles)])
+              optimizer='adam')
 model.fit(x=Xtrain, y=Ytrain, 
           epochs=10, 
           validation_split=0.2, 
