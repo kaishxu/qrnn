@@ -16,7 +16,7 @@ x3 = x1**2
 x4 = (x1+x2)/2
 
 Xtrain = np.vstack((x2, x3, x4)).T #(900, 3)
-Ytrain = np.array([x1]*99).T #(900, 99)
+Ytrain = np.array([x1]*99).T #(900, 1)
 
 # Parameters
 input_dim = 3
@@ -25,14 +25,17 @@ num_units = [200, 200]
 act = ['relu', 'relu']
 dropout = [0.1, 0.1]
 gauss_std = [0.3, 0.3]
+num_quantiles = 9
 
 # Get model
-model = get_model(input_dim, num_units, act, dropout, gauss_std, num_hidden_layers)
+model = get_model(input_dim, num_units, act, dropout, gauss_std, num_hidden_layers, num_quantiles)
 print(model.summary())
 
 # Train
 early_stopping = EarlyStopping(monitor='val_qloss_score', patience=5)
-model.compile(loss=qloss, optimizer='adam', metrics=[Qloss()])
+model.compile(loss=lambda y_t, y_p: qloss(y_true=y_t, y_pred=y_p, n_q=num_quantiles), 
+              optimizer='adam', 
+              metrics=[Qloss(num_quantiles)])
 model.fit(x=Xtrain, y=Ytrain, 
           epochs=10, 
           validation_split=0.2, 
