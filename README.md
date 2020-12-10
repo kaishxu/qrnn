@@ -16,7 +16,7 @@ x3 = x1**2
 x4 = (x1+x2)/2
 
 Xtrain = np.vstack((x2, x3, x4)).T #(900, 3)
-Ytrain = np.array([x1]*99).T #(900, 1)
+Ytrain = np.array([x1]*99).T #(900, 99)
 
 # Parameters
 input_dim = 3
